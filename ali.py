@@ -12,7 +12,7 @@ class MainPage(WebPage):
 
     def __init__(self, web_driver, url=''):
         if not url:
-            url = os.getenv("MAIN_URL") or 'https://best.aliexpress.ru/'
+            url = 'https://best.aliexpress.ru/'
 
         super().__init__(web_driver, url)
 
