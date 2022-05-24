@@ -1,11 +1,7 @@
 import pytest
-from telnetlib import EC
 from selenium import webdriver
 from selenium.webdriver import Keys
 from selenium.webdriver.common import keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import requests
 
 
@@ -16,13 +12,13 @@ def testing():
    pytest.driver.quit()
 
 
-def test_ozon(): #1 Тестируем работоспособность ссылки
+def test_ozon(): # Тестируем работоспособность ссылки
    url = "https://login.aliexpress.ru/"
    status = requests.get(url, params='').status_code
    assert status == 200
 
 
-def test_valid_login(): #2 регистрация валидными логином и паролем
+def test_valid_login(): # регистрация валидными логином и паролем
    # Ввоим ссылку на личный кабинет
    pytest.driver.get(
       'https://login.aliexpress.ru/?flag=1&return_url=https%3A%2F%2Ftrade.aliexpress.ru%2ForderList.htm%3Fspm%3Da2g2w.home.1000001.10.21cd501dj6F1TJ%26tracelog%3Dws_topbar%26_ga%3D2.133984070.936304568.1653134901-1302122509.1653134901')
@@ -39,7 +35,7 @@ def test_valid_login(): #2 регистрация валидными логин�
    assert pytest.driver.find_element_by_tag_name('h1').text == "Активные заказы"
 
 
-def test_no_valid_login(): #3 при неверном вводе логина возникает сообщение "Ваши учетное имя или пароль неправильные."
+def test_no_valid_login(): # при неверном вводе логина возникает сообщение "Ваши учетное имя или пароль неправильные."
    # Вводим email
    pytest.driver.get(
       'https://login.aliexpress.ru/?flag=1&return_url=https%3A%2F%2Ftrade.aliexpress.ru%2ForderList.htm%3Fspm%3Da2g2w.home.1000001.10.21cd501dj6F1TJ%26tracelog%3Dws_topbar%26_ga%3D2.133984070.936304568.1653134901-1302122509.1653134901')
@@ -51,7 +47,7 @@ def test_no_valid_login(): #3 при неверном вводе логина в
    pytest.driver.implicitly_wait(5)  # неявное ожидание
    assert pytest.driver.find_element_by_css_selector('span[class="batman-v2_index__fm-error-message__167xz7"]').text == "Ваши учетное имя или пароль неправильные."
 
-def test_no_valid_pass():  # 4 при неверном вводе пароля возникает сообщение "Ваши учетное имя или пароль неправильные."
+def test_no_valid_pass():  #  при неверном вводе пароля возникает сообщение "Ваши учетное имя или пароль неправильные."
 
    pytest.driver.get(
       'https://login.aliexpress.ru/?flag=1&return_url=https%3A%2F%2Ftrade.aliexpress.ru%2ForderList.htm%3Fspm%3Da2g2w.home.1000001.10.21cd501dj6F1TJ%26tracelog%3Dws_topbar%26_ga%3D2.133984070.936304568.1653134901-1302122509.1653134901')
@@ -66,7 +62,7 @@ def test_no_valid_pass():  # 4 при неверном вводе пароля �
    assert pytest.driver.find_element_by_css_selector(
          'span[class="batman-v2_index__fm-error-message__167xz7"]').text == "Ваши учетное имя или пароль неправильные."
 
-def test_no_pass():  # 5 при отсутствии пароля кнопка "Войти" не работает. Тест должен упасть
+def test_no_pass():  #  при отсутствии пароля кнопка "Войти" не работает. Тест должен упасть
    pytest.driver.get(
       'https://login.aliexpress.ru/?flag=1&return_url=https%3A%2F%2Ftrade.aliexpress.ru%2ForderList.htm%3Fspm%3Da2g2w.home.1000001.10.21cd501dj6F1TJ%26tracelog%3Dws_topbar%26_ga%3D2.133984070.936304568.1653134901-1302122509.1653134901')
 
@@ -80,7 +76,7 @@ def test_no_pass():  # 5 при отсутствии пароля кнопка "
 
 
 
-def test_product_card():#6-8 информация о товаре: наличие фото(7), описания(8), цены(9)
+def test_product_card():# информация о товаре: наличие фото, описания, цены
    # Переходим на карточку товара
    pytest.driver.get('https://aliexpress.ru/item/1005003017556701.html?spm=a2g2w.productlist.0.0.10de18246yW79Z&sku_id=12000023251868258')
    # Проверяем наличие фото
@@ -95,7 +91,7 @@ def test_product_card():#6-8 информация о товаре: наличи�
 
 
 
-def test_Shopping_Cart(): #9 добавляем товар в корзину
+def test_Shopping_Cart(): # добавляем товар в корзину
    # Переходим в личный кабинет
    pytest.driver.get(
    'https://login.aliexpress.ru/?flag=1&return_url=https%3A%2F%2Ftrade.aliexpress.ru%2ForderList.htm%3Fspm%3Da2g2w.home.1000001.10.21cd501dj6F1TJ%26tracelog%3Dws_topbar%26_ga%3D2.133984070.936304568.1653134901-1302122509.1653134901')
@@ -121,15 +117,15 @@ def test_Shopping_Cart(): #9 добавляем товар в корзину
    # проверяем, что товар есть в корзине
    assert pytest.driver.find_elements_by_css_selector('a[class="ShoppingcartItemList_ProductCard__productNameLink__1nl31"]')[0].get_attribute('href')=="https://www.aliexpress.ru/item/1005003017556701.html?mp=1"
 
-   # 10 Тестируем увеличение количества товара в корзине
+   #  Тестируем увеличение количества товара в корзине
    pytest.driver.find_elements_by_css_selector("svg[class='ali-icons_SvgIcon__icon__75ocax ali-icons_SvgIcon__size_M__75ocax ShoppingcartItemList_NumActionGroup__numIcon__ehpij']")[0].click()
    assert pytest.driver.find_elements_by_css_selector('input[class="ShoppingcartItemList_NumActionGroup__numInput__ehpij"]')[0].get_attribute('value')=="2"
 
-   # 11 Тестируем уменьшение количества товара в корзине
+   # Тестируем уменьшение количества товара в корзине
    pytest.driver.find_elements_by_css_selector("svg[class='ShoppingcartItemList_NumActionGroup__numIcon__ehpij']")[0].click()
    assert   pytest.driver.find_elements_by_css_selector('input[class="ShoppingcartItemList_NumActionGroup__numInput__ehpij"]')[0].get_attribute('value') == "1"
 
-   # 12 Удаляем товар из корзины
+   #  Удаляем товар из корзины
    pytest.driver.find_element_by_css_selector("svg[class='ShoppingcartItemList_ControlActionGroup__actionIcon__xpegy']").click()
    # Смотрим, что товар отсутствует
    assert pytest.driver.find_elements_by_css_selector('a[class="ShoppingcartItemList_ProductCard__productNameLink__1nl31"]')[0].get_attribute('href') == "https://www.aliexpress.ru/item/1005003017556701.html?mp=1"
@@ -140,11 +136,11 @@ def test_search_by_name(): #  поиск товара и фильтровани�
    pytest.driver.get(
       'https://best.aliexpress.ru/?spm=a2g2w.home.1000002.1.4918501dd3zhsW&_ga=2.95702228.936304568.1653134901-1302122509.1653134901')
 
-   # 13 Ищем товар
+   #  Ищем товар
    pytest.driver.find_element_by_name('SearchText').send_keys('stray kids'+ Keys.ENTER)
    assert pytest.driver.find_element_by_tag_name('h1').text == "stray kids"
 
-   # 14 Фильтруем товар. Устанавливаем диапазон цен от 10 до 100 руб.
+   #  Фильтруем товар. Устанавливаем диапазон цен от 10 до 100 руб.
    pytest.driver.find_element_by_xpath("//input[@placeholder='мин']").send_keys('1'+ Keys.ENTER)
    pytest.driver.find_element_by_xpath("//input[@placeholder='макс']").send_keys('100'+ Keys.ENTER)
 
